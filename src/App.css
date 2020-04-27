@@ -3,14 +3,8 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-header {
@@ -35,4 +29,75 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.service-button {
+  line-height: 1.499;
+  position: relative;
+  display: inline-flex;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  height: 32px;
+  padding: 0 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.65);
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  min-width: 160px;
+  align-items: center;
+}
+
+.service-button-icon {
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin: 0;
+  border-right: 1px solid;
+  max-width: 10px;
+  min-width: 20px;
+  padding: 0px;
+  text-align: center;
+}
+
+.service-button-name {
+  flex-grow: 11;
+  margin: 0;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.jwt-preview {
+  text-align: left;
+  font-family: monospace;
+  width: 95%;
+  border-radius: 6;
+  padding: 6;
+  background-color: #333;
+  color: #ccc;
+}
+
+nav {
+  color: #ccc;
+  background-color: #333;
+}
+
+nav * {
+  display: inline;
+}
+
+nav li {
+  margin: 20px;
+}
+
+.cors-prompt {
+  background-color: #bb0000;
+  font-weight: bolder;
+  color: white;
 }
