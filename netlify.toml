@@ -1,5 +1,5 @@
 [template.environment]
-  REACT_APP_ONE_GRAPH_APP_ID = "Set you OneGraph AppId Here"
+  REACT_APP_ONE_GRAPH_APP_ID = "What's your OneGraph AppId?"
 
 [build]
   command = "yarn build"
