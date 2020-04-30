@@ -1,13 +1,7 @@
 // This setup is only needed once per application
-async function fetchOneGraph(
-  auth,
-  appId,
-  operationsDoc,
-  operationName,
-  variables
-) {
+async function fetchOneGraph(auth, operationsDoc, operationName, variables) {
   const result = await fetch(
-    `https://serve.onegraph.com/graphql?app_id=${appId}`,
+    `https://serve.onegraph.com/graphql?app_id=${auth.appId}`,
     {
       method: "POST",
       headers: {
@@ -38,8 +32,9 @@ const operationsDoc = `
   }
 `;
 
-async function fetchSupportedServicesQuery() {
+async function fetchSupportedServicesQuery(auth) {
   const result = await fetchOneGraph(
+    auth,
     operationsDoc,
     "SupportedServicesQuery",
     {}

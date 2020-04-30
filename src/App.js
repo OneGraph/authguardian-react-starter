@@ -95,7 +95,7 @@ function navBar(appId) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Edit your rules {JSON.stringify(process.env, null, 2)}?
+            Edit your rules
           </a>
         </li>
         <li>
@@ -125,7 +125,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetchSupportedServicesQuery()
+    fetchSupportedServicesQuery(auth)
       .then((supportedServices) => {
         console.log(supportedServices);
         setState((oldState) => {
