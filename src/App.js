@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import OneGraphAuth from "onegraph-auth";
 import "./App.css";
 
-const appId = "2d970fda-a615-4990-9867-4e4191fb916d";
+const appId = process.env.ONE_GRAPH_APP_ID;
 
 const auth = new OneGraphAuth({
   appId: appId,
@@ -61,6 +61,38 @@ async function fetchSupportedServicesQuery() {
 
   return supportedServices;
 }
+
+const exampleUsage = (appId, service) => {
+  return `import React, { useState, useEffect } from "react";
+import OneGraphAuth from "onegraph-auth";
+
+const appId = "${appId}";
+
+const auth = new OneGraphAuth({
+  appId: appId,
+});
+
+const LoginWith${service.friendlyServiceName.replace(
+    /\W/g,
+    ""
+  )} = ({auth, setState, state}) => {
+  return (
+    <button
+      key="${service.slug}"
+      onClick={async () => {
+        await auth.login(service.slug);
+        const isLoggedIn = await auth.isLoggedIn("${service.slug}");
+        setState((oldState) => {
+          return { ...oldState, "${service.slug}": isLoggedIn };
+        });
+      }}
+    >
+      {!!state["${service.slug}"] ? " ✓" : ""}{" "}
+      Log in with ${service.friendlyServiceName}
+    </button>)
+  };
+`;
+};
 
 function corsPrompt(appId) {
   const origin = window.location.origin;
@@ -182,7 +214,6 @@ function App() {
         <p>
           Your OneGraph auth <code>JWT</code> preview:
         </p>
-
         <textarea
           className="jwt-preview"
           rows={15}
@@ -205,14 +236,14 @@ function App() {
           onClick={() => {
             auth.destroy();
             setState(() => {
-              return {};
+              return { supportedServices: state.supportedServices };
             });
           }}
         >
           Clear local JWT
         </button>
         <p style={{ textAlign: "left" }}>
-          {state.supportedServices.map((service) => {
+          {(state.supportedServices || []).map((service) => {
             return (
               <button
                 key={service.slug}
@@ -221,7 +252,11 @@ function App() {
                   await auth.login(service.slug);
                   const isLoggedIn = await auth.isLoggedIn(service.slug);
                   setState((oldState) => {
-                    return { ...oldState, [service.slug]: isLoggedIn };
+                    return {
+                      ...oldState,
+                      [service.slug]: isLoggedIn,
+                      mostRecentService: service,
+                    };
                   });
                 }}
               >
@@ -232,7 +267,22 @@ function App() {
               </button>
             );
           })}
-        </p>
+        </p>{" "}
+        {!state.mostRecentService ? null : (
+          <>
+            <h3>
+              Add 'Sign in with {state.mostRecentService.friendlyServiceName}'
+              to your React app
+            </h3>
+            <textarea
+              className="jwt-preview"
+              style={{ marginBottom: "250px" }}
+              rows={15}
+              value={exampleUsage(appId, state.mostRecentService)}
+              readOnly={true}
+            ></textarea>
+          </>
+        )}
       </header>
     </div>
   );
