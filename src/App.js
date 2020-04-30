@@ -15,34 +15,34 @@ const gitHubLink =
   "https://github.com/OneGraph/authguardian-react-starter";
 
 const exampleUsage = (appId, service) => {
-  return `import React, { useState, useEffect } from "react";
-import OneGraphAuth from "onegraph-auth";
-
-const appId = "${appId}";
-
-const auth = new OneGraphAuth({
-  appId: appId,
-});
-
-const LoginWith${service.friendlyServiceName.replace(
+  const componentName = `LoginWith${service.friendlyServiceName.replace(
     /\W/g,
     ""
-  )} = ({auth, setState, state}) => {
+  )}`;
+  return `import OneGraphAuth from "onegraph-auth";
+
+const auth = new OneGraphAuth({
+  appId: "${appId}",
+});
+
+/* Usage:
+  <${componentName} oneGraphAuth={auth} onLogin={() => console.log("User has successfully logged into ${service.friendlyServiceName}.")} />
+*/
+const ${componentName} = ({ oneGraphAuth, onLogin }) => {
   return (
     <button
-      key="${service.slug}"
       onClick={async () => {
-        await auth.login(service.slug);
-        const isLoggedIn = await auth.isLoggedIn("${service.slug}");
-        setState((oldState) => {
-          return { ...oldState, "${service.slug}": isLoggedIn };
-        });
+        await oneGraphAuth.login("${service.slug}");
+        const isLoggedIn = await oneGraphAuth.isLoggedIn("${service.slug}");
+        if (isLoggedIn) {
+          onLogin();
+        }
       }}
     >
-      {!!state["${service.slug}"] ? " ✓" : ""}{" "}
-      Log in with ${service.friendlyServiceName}
-    </button>)
-  };
+    Log in with ${service.friendlyServiceName}
+    </button>
+  );
+};
 `;
 };
 
